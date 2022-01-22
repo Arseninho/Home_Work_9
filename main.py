@@ -6,13 +6,14 @@ from flask import Flask
 from flask_restful import Resource, Api
 import sqlite3
 
-con = sqlite3.connect('identifier.sqlite')
+con = sqlite3.connect('exmaple.db',  check_same_thread=False)
 cur = con.cursor()
 
-cur.execute("SELECT name FROM students")
-print(cur.fetchall())
 
-quit()
+
+# cur.execute("SELECT * FROM students where name = 'Arsen'")
+# print(cur.fetchall())
+
 # cur.execute("Update students set name = ? where id = ?",('Gvanca', 5))
 # con.commit()
 
@@ -24,17 +25,16 @@ quit()
 # con.commit()
 
 
+
 app = Flask(__name__)
 api = Api(app)
-
-
 # mysite.ge/
 
 class Students(Resource):
     def get(self, student_id):
+
         cur.execute("SELECT * FROM students where id = ?", (student_id,))
         return cur.fetchone()
-
 
 api.add_resource(Students, '/read/<int:student_id>')
 
